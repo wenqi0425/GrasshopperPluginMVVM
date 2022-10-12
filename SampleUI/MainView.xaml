@@ -9,7 +9,7 @@
     <Grid>
         <StackPanel Margin="10" VerticalAlignment="Center">
             <Label VerticalAlignment="Top" HorizontalAlignment="Center" Content="{Binding Counter}"></Label>
-            <Button HorizontalAlignment="Center" VerticalAlignment="Top" Content="Click me"></Button>            
+            <Button HorizontalAlignment="Center" VerticalAlignment="Top" Content="Click me" Command="{Binding CountUpCommand}"></Button>            
         </StackPanel>
             
     </Grid>

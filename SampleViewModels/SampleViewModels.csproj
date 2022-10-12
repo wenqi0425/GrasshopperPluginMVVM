@@ -44,5 +44,11 @@
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SampleMVVM\SampleMVVM.csproj">
+      <Project>{a8c76675-19b0-434e-af61-92a0735cb114}</Project>
+      <Name>SampleMVVM</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
