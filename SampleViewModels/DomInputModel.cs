@@ -14,6 +14,8 @@ namespace SampleViewModels
         private WebView2 _webView;
 
         private List<DomInputModel> _domInputModels;
+
+        // properties inheritanced from BaseDomInputModel
         public List<string> InputValues 
             => _domInputModels?.Select(s => s.value).ToList();
         
@@ -28,9 +30,8 @@ namespace SampleViewModels
 
 
         // Run the DOM Query script (JS) to get all the input elements.
-        private async Task RunDomInputQuery()
+        public async Task RunDomInputQuery()
         {
-            // get the results of the DOM `input` element query script, and abort if none found
             string scriptResult = await _webView.ExecuteScriptAsync("queryInputElements();");
             dynamic deserializedDomModels = JsonConvert.DeserializeObject(scriptResult);
             if (deserializedDomModels == null) return;
