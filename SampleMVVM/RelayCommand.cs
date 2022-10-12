@@ -9,7 +9,8 @@ namespace SampleMVVM
 {
     public class RelayCommand : ICommand
     {
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged = (sender, e) => { };
+        
         private Action _myAction;
         public RelayCommand(Action action)
         {
