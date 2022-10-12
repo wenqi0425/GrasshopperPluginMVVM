@@ -10,6 +10,8 @@ namespace SampleMVVM
     public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
+
+        /* Nugets: Fody and PropertyChanged.Fody
         public void RaisePropertyChanged(string propertyName)
         {
             if(PropertyChanged !=null)
@@ -17,5 +19,6 @@ namespace SampleMVVM
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         } 
+        */
     }
 }

@@ -10,7 +10,9 @@ namespace SampleViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        /* Nugets: Fody and PropertyChanged.Fody
         private int _counter;
+              
         public int Counter 
         {
             get{ return _counter; }
@@ -20,6 +22,10 @@ namespace SampleViewModels
                 this.RaisePropertyChanged(nameof(this.Counter));                
             } 
         }
+        */
+
+        public int Counter { get; set; }
+
         public ICommand CountUpCommand { get; set; }
         public MainViewModel()
         {
