@@ -9,6 +9,7 @@ namespace SampleDesktop
 {
     class Program
     {
+        [STAThread]
         static void Main(string[] args)
         {
             var myMainWindow = new MainView();
