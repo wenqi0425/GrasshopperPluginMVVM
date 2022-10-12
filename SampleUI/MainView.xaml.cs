@@ -26,6 +26,9 @@ namespace SampleUI
         {
             InitializeComponent();
             this.DataContext = new MainViewModel();
+
+            MainViewModel vm = new MainViewModel();
+            vm.CountUp();
         }
     }
 }

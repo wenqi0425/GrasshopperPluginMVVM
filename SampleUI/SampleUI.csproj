@@ -57,6 +57,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SampleMVVM\SampleMVVM.csproj">
+      <Project>{a8c76675-19b0-434e-af61-92a0735cb114}</Project>
+      <Name>SampleMVVM</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SampleViewModels\SampleViewModels.csproj">
       <Project>{2b5d7876-39dc-49da-bd35-a4a3d9c2865e}</Project>
       <Name>SampleViewModels</Name>
