@@ -24,6 +24,8 @@ namespace SampleViewModels
         }
         */
 
+        public string MyText { get; set; }
+
         public int Counter { get; set; }
 
         public ICommand CountUpCommand { get; set; }
