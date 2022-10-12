@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SampleViewModels;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +22,14 @@ namespace SampleWebview2
     /// </summary>
     public partial class RhinoPluginWindow : Window
     {
+        private DomInputModel _domInputModel;
+
+        public List<string> InputValues => _domInputModel.InputValues;
+        public List<string> InputIds => _domInputModel.InputIds;
+        public List<string> InputNames => _domInputModel.InputNames;
+        public List<string> InputTypes => _domInputModel.InputTypes;
+
+
         public RhinoPluginWindow()
         {
             InitializeComponent();
