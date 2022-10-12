@@ -13,5 +13,10 @@ namespace SampleViewModels
         {
             this.Counter = 77;
         }
+
+        public void CountUp()
+        {
+            this.Counter += 1;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using SampleViewModels;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,7 @@ namespace SampleUI
         public MainView()
         {
             InitializeComponent();
+            this.DataContext = new MainViewModel();
         }
     }
 }
