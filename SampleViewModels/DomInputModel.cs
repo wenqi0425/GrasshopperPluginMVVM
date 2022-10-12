@@ -1,5 +1,6 @@
-﻿using SampleMVVM;
-
+﻿using Microsoft.Web.WebView2.Wpf;
+using Newtonsoft.Json;
+using SampleMVVM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace SampleViewModels
 {
-    public class DomInputModel : BaseDomInputModel
+    public class DomInputModel: BaseDomInputModel
     {
+        private WebView2 _webView;
+
         private List<DomInputModel> _domInputModels;
         public List<string> InputValues 
             => _domInputModels?.Select(s => s.value).ToList();
@@ -22,5 +25,22 @@ namespace SampleViewModels
 
         public List<string> InputTypes 
             => _domInputModels?.Select(s => s.type).ToList();
+
+
+        // Run the DOM Query script (JS) to get all the input elements.
+        private async Task RunDomInputQuery()
+        {
+            // get the results of the DOM `input` element query script, and abort if none found
+            string scriptResult = await _webView.ExecuteScriptAsync("queryInputElements();");
+            dynamic deserializedDomModels = JsonConvert.DeserializeObject(scriptResult);
+            if (deserializedDomModels == null) return;
+
+            _domInputModels = new List<DomInputModel>();
+            foreach (dynamic s in deserializedDomModels)
+            {
+                DomInputModel domInputModel = JsonConvert.DeserializeObject<DomInputModel>(s.ToString());
+                _domInputModels.Add(domInputModel);
+            }
+        }
     }
 }

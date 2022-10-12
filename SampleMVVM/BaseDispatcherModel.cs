@@ -24,8 +24,6 @@ namespace SampleMVVM
         private string ExecutingLocation 
             => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\temp";
 
-        private WebView2 _webView;
-
         public BaseDispatcherModel(string htmlPath, Dispatcher dispatcher)
         {
             _htmlPath = htmlPath;
