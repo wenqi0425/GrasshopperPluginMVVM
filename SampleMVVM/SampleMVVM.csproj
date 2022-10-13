@@ -81,6 +81,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseDispatcherModel.cs" />
+    <Compile Include="BaseDomClickModel.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="BaseDomInputModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

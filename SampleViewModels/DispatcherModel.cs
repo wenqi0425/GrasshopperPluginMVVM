@@ -32,6 +32,6 @@ namespace SampleViewModels
         {
             _htmlPath = htmlPath;
             _dispatcher = dispatcher;
-        }
+        }     
     }
 }

@@ -15,6 +15,8 @@ namespace SampleViewModels
 
         private List<DomInputModel> _domInputModels;
 
+        private DomInputModel _domInputModel;
+
         // properties inheritanced from BaseDomInputModel
         public List<string> InputValues 
             => _domInputModels?.Select(s => s.value).ToList();
@@ -41,6 +43,34 @@ namespace SampleViewModels
             {
                 DomInputModel domInputModel = JsonConvert.DeserializeObject<DomInputModel>(s.ToString());
                 _domInputModels.Add(domInputModel);
+            }
+        }
+
+        public async void RunDomInputQuery(DomClickModel clickModel)
+        {
+            await RunDomInputQuery();
+            // handle output for buttons
+            if (clickModel.targetType == "button")
+            {
+                HandleButtonClick(clickModel);
+            }
+        }
+
+        private void HandleButtonClick(DomClickModel clickModel)
+        {
+            //if (clickModel.targetType != "button") return;
+            // TODO: need to ensure that there is a unique id for each button, even when users
+            // are not using the id/name feature correctly. for now we loop over all the possible buttons
+            var clickedButtons = 
+                _domInputModels.Where(m 
+                        => m.type == clickModel.targetType &&
+                           m.id == clickModel.targetId ||
+                           m.name == clickModel.targetName);
+
+            //if (clickedButtons == null) return;
+            foreach (DomInputModel domInput in clickedButtons)
+            {
+                domInput.value = "true";
             }
         }
     }

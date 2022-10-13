@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DispatcherModel.cs" />
+    <Compile Include="DomClickModel.cs" />
     <Compile Include="DomInputModel.cs" />
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
