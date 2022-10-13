@@ -12,8 +12,14 @@ namespace SampleViewModels
 {
     public class DomClickModel : BaseDomClickModel
     {
-        // private DomClickModel _domClickModel;
         private List<DomInputModel> _domInputModels;
+
+        private DomInputModel _domInputModel;
+
+        public DomClickModel()
+        {
+
+        }
 
         /*
         public string ClickType => _domClickModel.type;
@@ -21,7 +27,7 @@ namespace SampleViewModels
         public string ClickTargetName => _domClickModel.targetName;
         */
 
-        public void HandleButtonClick(DomClickModel clickModel)
+        private void HandleButtonClick(DomClickModel clickModel)
         {
             //if (clickModel.targetType != "button") return;
             // TODO: need to ensure that there is a unique id for each button, even when users
@@ -36,6 +42,16 @@ namespace SampleViewModels
             foreach (DomInputModel domInput in clickedButtons)
             {
                 domInput.value = "true";
+            }
+        }
+
+        public async void HandleButtonClickAfterInput(DomClickModel clickModel)
+        {
+            await _domInputModel.RunDomInputQuery();
+            // handle output for buttons
+            if (clickModel.targetType == "button")
+            {
+               HandleButtonClick(clickModel);
             }
         }
     }

@@ -62,7 +62,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DispatcherModel.cs" />
+    <Compile Include="InitializeModel.cs" />
     <Compile Include="DomClickModel.cs" />
     <Compile Include="DomInputModel.cs" />
     <Compile Include="MainViewModel.cs" />

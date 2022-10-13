@@ -9,10 +9,18 @@
              Title="Rhino Plugin Window" 
              Height="300" 
              Width="500">
-    
-    
-    
+
+    <Window.Resources>
+        <wv2:CoreWebView2CreationProperties x:Key="EvergreenWebView2CreationProperties" />
+    </Window.Resources>
+
     <DockPanel>
-                    
+        <Grid DockPanel.Dock="Top" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="30px"></RowDefinition>
+            </Grid.RowDefinitions>
+            <DockPanel Grid.Row="0" x:Name="Docker" Margin="0,0,-0.4,-0.2" Grid.RowSpan="2"/>
+        </Grid>                    
     </DockPanel>
 </Window>

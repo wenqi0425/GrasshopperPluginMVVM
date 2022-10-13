@@ -11,17 +11,13 @@ namespace SampleViewModels
 {
     public class DomInputModel: BaseDomInputModel
     {
-        private readonly WebView2 _webView;
+        private WebView2 _webView;
 
         private List<DomInputModel> _domInputModels;
 
-        private DomInputModel _domInputModel;
-
-        private readonly DomClickModel _domClickModel;
-
-        public DomInputModel()
+        public DomInputModel(WebView2 webView)
         {
-
+            _webView = webView ?? throw new ArgumentNullException(nameof(webView));
         }
 
         // properties inheritanced from BaseDomInputModel        
@@ -32,12 +28,11 @@ namespace SampleViewModels
             => _domInputModels?.Select(s => s.id).ToList();
 
         public List<string> InputNames 
+
             => _domInputModels?.Select(s => s.name).ToList();
 
         public List<string> InputTypes 
             => _domInputModels?.Select(s => s.type).ToList();
-        
-
 
         // Run the DOM Query script (JS) to get all the input elements.
         public async Task RunDomInputQuery()
@@ -52,16 +47,6 @@ namespace SampleViewModels
                 DomInputModel domInputModel = JsonConvert.DeserializeObject<DomInputModel>(s.ToString());
                 _domInputModels.Add(domInputModel);
             }
-        }
-
-        public async void RunDomInputQuery(DomClickModel clickModel)
-        {
-            await RunDomInputQuery();
-            // handle output for buttons
-            if (clickModel.targetType == "button")
-            {
-                _domClickModel.HandleButtonClick(clickModel);
-            }
-        }
+        }        
     }
 }

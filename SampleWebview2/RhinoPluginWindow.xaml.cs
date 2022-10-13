@@ -23,7 +23,7 @@ namespace SampleWebview2
     public partial class RhinoPluginWindow : Window
     {
         private DomInputModel _domInputModel;
-        private DispatcherModel _dispatcher;
+        private InitializeModel _dispatcher;
 
 
         public List<string> InputValues => _domInputModel.InputValues;
@@ -35,7 +35,7 @@ namespace SampleWebview2
         public RhinoPluginWindow(string htmlPath)
         {
             InitializeComponent();
-            _dispatcher = new DispatcherModel(htmlPath, Dispatcher);
+            _dispatcher = new InitializeModel(htmlPath, Dispatcher);
             //_dispatcher.InitializeWebView(Docker);
             //_dispatcher.SubscribeToHtmlChanged();
         }
