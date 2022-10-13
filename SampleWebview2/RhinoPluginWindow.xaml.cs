@@ -1,8 +1,7 @@
 ﻿using SampleViewModels;
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SampleMVVM;
 
 namespace SampleWebview2
 {
@@ -23,6 +23,8 @@ namespace SampleWebview2
     public partial class RhinoPluginWindow : Window
     {
         private DomInputModel _domInputModel;
+        private DispatcherModel _dispatcher;
+
 
         public List<string> InputValues => _domInputModel.InputValues;
         public List<string> InputIds => _domInputModel.InputIds;
@@ -30,9 +32,12 @@ namespace SampleWebview2
         public List<string> InputTypes => _domInputModel.InputTypes;
 
 
-        public RhinoPluginWindow()
+        public RhinoPluginWindow(string htmlPath)
         {
             InitializeComponent();
+            _dispatcher = new DispatcherModel(htmlPath, Dispatcher);
+            _dispatcher.InitializeWebView(Docker);
+            _dispatcher.SubscribeToHtmlChanged();
         }
     }
 }
