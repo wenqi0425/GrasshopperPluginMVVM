@@ -36,8 +36,8 @@ namespace SampleWebview2
         {
             InitializeComponent();
             _dispatcher = new DispatcherModel(htmlPath, Dispatcher);
-            _dispatcher.InitializeWebView(Docker);
-            _dispatcher.SubscribeToHtmlChanged();
+            //_dispatcher.InitializeWebView(Docker);
+            //_dispatcher.SubscribeToHtmlChanged();
         }
     }
 }
