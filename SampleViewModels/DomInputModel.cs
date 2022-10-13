@@ -11,13 +11,18 @@ namespace SampleViewModels
 {
     public class DomInputModel: BaseDomInputModel
     {
-        private WebView2 _webView;
+        private readonly WebView2 _webView;
 
         private List<DomInputModel> _domInputModels;
 
         private DomInputModel _domInputModel;
 
-        private DomClickModel _domClickModel;
+        private readonly DomClickModel _domClickModel;
+
+        public DomInputModel()
+        {
+
+        }
 
         // properties inheritanced from BaseDomInputModel        
         public List<string> InputValues 
