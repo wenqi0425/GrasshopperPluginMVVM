@@ -1,15 +1,18 @@
-using Grasshopper;
 using Grasshopper.Kernel;
-
 using Rhino.Geometry;
-
 using System;
-using System.Collections.Generic;
+using SampleWebview2;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace OurGrasshopperPlugin
 {
-    public class OurGrasshopperPluginComponent : GH_Component
+    public class HtmlUiComponent : GH_Component
     {
+        private RhinoPluginWindow _plugWindow;
+
+        private Thread _uiThread;
+
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
         /// constructor without any arguments.
@@ -17,10 +20,11 @@ namespace OurGrasshopperPlugin
         /// Subcategory the panel. If you use non-existing tab or panel names, 
         /// new tabs/panels will automatically be created.
         /// </summary>
-        public OurGrasshopperPluginComponent()
-          : base("OurGrasshopperPlugin", "ASpi",
+
+        public HtmlUiComponent()
+          : base("Our Plugin Html Ui", "HTML",
             "Launch a UI Window from a HTML file.",
-            "Curve", "Primitive")
+            "HTML", "Main")
         {
         }
 
@@ -33,10 +37,12 @@ namespace OurGrasshopperPlugin
             // You can often supply default values when creating parameters.
             // All parameters must have the correct access type. If you want 
             // to import lists or trees of values, modify the ParamAccess flag.
-            pManager.AddPlaneParameter("Plane", "P", "Base plane for spiral", GH_ParamAccess.item, Plane.WorldXY);
-            pManager.AddNumberParameter("Inner Radius", "R0", "Inner radius for spiral", GH_ParamAccess.item, 1.0);
-            pManager.AddNumberParameter("Outer Radius", "R1", "Outer radius for spiral", GH_ParamAccess.item, 10.0);
-            pManager.AddIntegerParameter("Turns", "T", "Number of turns between radii", GH_ParamAccess.item, 10);
+            pManager.AddTextParameter("HTML Path", "path", "Where to look for the HTML interface.",
+                GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Show Window", "show", "Toggle for showing/hiding the interface window.",
+                GH_ParamAccess.item, false);
+            pManager.AddTextParameter("Title", "title", "The title name for the UI window.",
+                GH_ParamAccess.item, "UI");
 
             // If you want to change properties of certain parameters, 
             // you can use the pManager instance to access them by index:
@@ -50,7 +56,11 @@ namespace OurGrasshopperPlugin
         {
             // Use the pManager object to register your output parameters.
             // Output parameters do not have default values, but they too must have the correct access type.
-            pManager.AddCurveParameter("Spiral", "S", "Spiral curve", GH_ParamAccess.item);
+            pManager.AddTextParameter("Input Values", "vals", "Value of HTML Inputs", GH_ParamAccess.list);
+            pManager.AddTextParameter("Input Ids", "ids", "Ids of HTML Inputs", GH_ParamAccess.list);
+            pManager.AddTextParameter("Input Names", "names", "Names of HTML Inputs", GH_ParamAccess.list);
+            pManager.AddTextParameter("Input Types", "types", "Types of HTML Inputs", GH_ParamAccess.list);
+            pManager.AddGenericParameter("Web Window", "web", "Web Window Instance", GH_ParamAccess.item);
 
             // Sometimes you want to hide a specific parameter from the Rhino preview.
             // You can use the HideParameter() method as a quick way:
@@ -62,45 +72,56 @@ namespace OurGrasshopperPlugin
         /// </summary>
         /// <param name="DA">The DA object can be used to retrieve data from input parameters and 
         /// to store data in output parameters.</param>
-        protected override void SolveInstance(IGH_DataAccess DA)
+        protected override void SolveInstance(IGH_DataAccess da)
         {
             // First, we need to retrieve all data from the input parameters.
             // We'll start by declaring variables and assigning them starting values.
-            Plane plane = Plane.WorldXY;
-            double radius0 = 0.0;
-            double radius1 = 0.0;
-            int turns = 0;
+            // get input from gh component inputs
+            string path = null;
+            bool show = false;
+            string title = null;
 
-            // Then we need to access the input parameters individually. 
-            // When data cannot be extracted from a parameter, we should abort this method.
-            if (!DA.GetData(0, ref plane)) return;
-            if (!DA.GetData(1, ref radius0)) return;
-            if (!DA.GetData(2, ref radius1)) return;
-            if (!DA.GetData(3, ref turns)) return;
+            // get input
+            if (!da.GetData(0, ref path)) return;
+            if (!da.GetData<bool>(1, ref show)) return;
+            da.GetData(2, ref title);
 
-            // We should now validate the data and warn the user if invalid data is supplied.
-            if (radius0 < 0.0)
+            da.SetDataList(0, _plugWindow.InputValues);
+            da.SetDataList(1, _plugWindow.InputIds);
+            da.SetDataList(2, _plugWindow.InputNames);
+            da.SetDataList(3, _plugWindow.InputTypes);
+            da.SetData(4, _plugWindow);
+
+            LaunchWindow(path, title);
+
+            GH_Document doc = OnPingDocument();
+            doc?.ScheduleSolution(500, document => ExpireSolution(false));
+        }
+
+        private void LaunchWindow(string path, string title = "UI")
+        {
+            if (!(_uiThread is null) && _uiThread.IsAlive) return;
+            _uiThread = new Thread(() =>
             {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Inner radius must be bigger than or equal to zero");
-                return;
-            }
-            if (radius1 <= radius0)
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Outer radius must be bigger than the inner radius");
-                return;
-            }
-            if (turns <= 0)
-            {
-                AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Spiral turn count must be bigger than or equal to one");
-                return;
-            }
+                SynchronizationContext.SetSynchronizationContext(
+                    new DispatcherSynchronizationContext(
+                        Dispatcher.CurrentDispatcher));
+                // The dialog becomes the owner responsible for disposing the objects given to it.
+                _plugWindow = new RhinoPluginWindow(path);
+                _plugWindow.Closed += _plugWindow_Closed;
+                _plugWindow.Show();
+                _plugWindow.Title = title;
+                Dispatcher.Run();
+            });
 
-            // We're set to create the spiral now. To keep the size of the SolveInstance() method small, 
-            // The actual functionality will be in a different method:
-            Curve spiral = CreateSpiral(plane, radius0, radius1, turns);
+            _uiThread.SetApartmentState(ApartmentState.STA);
+            _uiThread.IsBackground = true;
+            _uiThread.Start();
+        }
 
-            // Finally assign the spiral to the output parameter.
-            DA.SetData(0, spiral);
+        private void _plugWindow_Closed(object sender, EventArgs e)
+        {
+            Dispatcher.CurrentDispatcher.InvokeShutdown();
         }
 
         Curve CreateSpiral(Plane plane, double r0, double r1, Int32 turns)
