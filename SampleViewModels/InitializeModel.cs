@@ -1,7 +1,5 @@
 ﻿using Microsoft.Web.WebView2.Core;
-
 using SampleMVVM;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -66,9 +64,10 @@ namespace SampleViewModels
             _webView.Source = new Uri(_htmlPath);
             _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(
                 Properties.Resources.AddDocumentClickListener);
-            _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(Properties.Resources
-                .QueryInputElementsInDOM);
-            _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(Properties.Resources.SetValuesInDom);
+            _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(
+                Properties.Resources.QueryInputElementsInDOM);
+            _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(
+                Properties.Resources.SetValuesInDom);
         }
     }
 }
