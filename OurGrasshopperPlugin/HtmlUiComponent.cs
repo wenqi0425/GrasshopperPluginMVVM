@@ -1,5 +1,4 @@
 using Grasshopper.Kernel;
-using Rhino.Geometry;
 using System;
 using SampleWebview2;
 using System.Threading;
@@ -34,7 +33,7 @@ namespace OurGrasshopperPlugin
         /// <summary>
         /// Registers all the input parameters for this component.
         /// </summary>
-        protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
+        protected override void RegisterInputParams(GH_InputParamManager pManager)
         {
             // Use the pManager object to register your input parameters.
             // You can often supply default values when creating parameters.
@@ -55,7 +54,7 @@ namespace OurGrasshopperPlugin
         /// <summary>
         /// Registers all the output parameters for this component.
         /// </summary>
-        protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
+        protected override void RegisterOutputParams(GH_OutputParamManager pManager)
         {
             // Use the pManager object to register your output parameters.
             // Output parameters do not have default values, but they too must have the correct access type.
