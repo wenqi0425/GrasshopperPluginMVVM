@@ -4,6 +4,8 @@ using System;
 using SampleWebview2;
 using System.Threading;
 using System.Windows.Threading;
+using System.Drawing;
+using SampleViewModels.Properties;
 
 namespace OurGrasshopperPlugin
 {
@@ -12,6 +14,7 @@ namespace OurGrasshopperPlugin
         private RhinoPluginWindow _plugWindow;
 
         private Thread _uiThread;
+        private string _oldPath;
 
         /// <summary>
         /// Each implementation of GH_Component must provide a public 
@@ -86,6 +89,12 @@ namespace OurGrasshopperPlugin
             if (!da.GetData<bool>(1, ref show)) return;
             da.GetData(2, ref title);
 
+            if (_oldPath != path)
+            {
+                _plugWindow.Navigate(path);
+                _oldPath = path;
+            }
+
             da.SetDataList(0, _plugWindow.InputValues);
             da.SetDataList(1, _plugWindow.InputIds);
             da.SetDataList(2, _plugWindow.InputNames);
@@ -124,30 +133,7 @@ namespace OurGrasshopperPlugin
             Dispatcher.CurrentDispatcher.InvokeShutdown();
         }
 
-        Curve CreateSpiral(Plane plane, double r0, double r1, Int32 turns)
-        {
-            Line l0 = new Line(plane.Origin + r0 * plane.XAxis, plane.Origin + r1 * plane.XAxis);
-            Line l1 = new Line(plane.Origin - r0 * plane.XAxis, plane.Origin - r1 * plane.XAxis);
-
-            Point3d[] p0;
-            Point3d[] p1;
-
-            l0.ToNurbsCurve().DivideByCount(turns, true, out p0);
-            l1.ToNurbsCurve().DivideByCount(turns, true, out p1);
-
-            PolyCurve spiral = new PolyCurve();
-
-            for (int i = 0; i < p0.Length - 1; i++)
-            {
-                Arc arc0 = new Arc(p0[i], plane.YAxis, p1[i + 1]);
-                Arc arc1 = new Arc(p1[i + 1], -plane.YAxis, p0[i + 1]);
-
-                spiral.Append(arc0);
-                spiral.Append(arc1);
-            }
-
-            return spiral;
-        }
+        
 
         /// <summary>
         /// The Exposure property controls where in the panel a component icon 
@@ -163,7 +149,7 @@ namespace OurGrasshopperPlugin
         /// You can add image files to your project resources and access them like this:
         /// return Resources.IconForThisComponent;
         /// </summary>
-        protected override System.Drawing.Bitmap Icon => null;
+        protected override Bitmap Icon => Resources.web_window;
 
         /// <summary>
         /// Each component must have a unique Guid to identify it. 

@@ -69,5 +69,15 @@ namespace SampleViewModels
             _webView.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(
                 Properties.Resources.SetValuesInDom);
         }
+
+        public void Navigate(string newPath)
+        {
+            //if (_htmlPath == newPath) return;
+            _dispatcher.BeginInvoke(new Action(() =>
+            {
+                _htmlPath = newPath;
+                _webView.Source = new Uri(_htmlPath);
+            }));
+        }
     }
 }

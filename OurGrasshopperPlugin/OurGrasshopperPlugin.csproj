@@ -15,6 +15,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <ProjectReference Include="..\SampleViewModels\SampleViewModels.csproj" />
     <ProjectReference Include="..\SampleWebview2\SampleWebview2.csproj" />
   </ItemGroup>
   
