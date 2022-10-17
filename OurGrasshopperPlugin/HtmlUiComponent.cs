@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows.Threading;
 using System.Drawing;
 using SampleViewModels.Properties;
+using System.Diagnostics;
 
 namespace OurGrasshopperPlugin
 {
@@ -88,22 +89,40 @@ namespace OurGrasshopperPlugin
             if (!da.GetData<bool>(1, ref show)) return;
             da.GetData(2, ref title);
 
-            if (_oldPath != path)
+            //_plugWindow.Navigate(path);
+            //_oldPath = path;
+
+            //while (_uiThread.IsAlive && !_plugWindow.IsInitialized)
+            //{
+            //    this.Message = "Waiting...";
+            //}
+            //this.Message = "Inititalised window.";
+
+            LaunchWindow(path, title); // Sleep 500, then return.
+
+            if (_plugWindow != null)
             {
-                _plugWindow.Navigate(path);
-                _oldPath = path;
+                da.SetDataList(0, _plugWindow.InputValues);
+                da.SetDataList(1, _plugWindow.InputIds);
+                da.SetDataList(2, _plugWindow.InputNames);
+                da.SetDataList(3, _plugWindow.InputTypes);
+                da.SetData(4, _plugWindow);
+
+                this.ClearRuntimeMessages();
             }
-
-            da.SetDataList(0, _plugWindow.InputValues);
-            da.SetDataList(1, _plugWindow.InputIds);
-            da.SetDataList(2, _plugWindow.InputNames);
-            da.SetDataList(3, _plugWindow.InputTypes);
-            da.SetData(4, _plugWindow);
-
-            LaunchWindow(path, title);
+            else
+            {
+                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Failed to get window instance..");
+                return;
+            }
 
             GH_Document doc = OnPingDocument();
             doc?.ScheduleSolution(500, document => ExpireSolution(false));
+        }
+
+        private void _plugWindow_Initialized(object sender, EventArgs e)
+        {
+            Debug.WriteLine($"Finished initialising the WV2 window at {DateTime.Now.Ticks}");
         }
 
         private void LaunchWindow(string path, string title = "UI")
@@ -131,8 +150,6 @@ namespace OurGrasshopperPlugin
         {
             Dispatcher.CurrentDispatcher.InvokeShutdown();
         }
-
-        
 
         /// <summary>
         /// The Exposure property controls where in the panel a component icon 

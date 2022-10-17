@@ -6,6 +6,7 @@
     <Title>OurGrasshopperPlugin</Title>
     <Description>Description of OurGrasshopperPlugin</Description>
     <TargetExt>.gha</TargetExt>
+    <BaseOutputPath>C:\Users\wenqi\AppData\Roaming\Grasshopper\Libraries\SampleUI</BaseOutputPath>
   </PropertyGroup>
   
   <ItemGroup>
@@ -24,6 +25,10 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
+  
+  <PropertyGroup Label="Globals">
+    <WebView2DispatchAdapterOutputDir></WebView2DispatchAdapterOutputDir>
+  </PropertyGroup>
   
   <PropertyGroup Condition="$(Configuration) == 'Debug' AND $([MSBuild]::IsOSPlatform(Windows))">
     <StartProgram>C:\Program Files\Rhino 7\System\Rhino.exe</StartProgram>

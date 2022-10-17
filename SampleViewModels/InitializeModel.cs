@@ -26,7 +26,7 @@ namespace SampleViewModels
 
         // A special "temp" folder should be created in the Grasshopper/Libraries directory.
         private string ExecutingLocation
-            => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\temp";
+            => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\SampleTemp";
 
         public InitializeModel(string htmlPath, Dispatcher dispatcher)
         {
@@ -38,7 +38,8 @@ namespace SampleViewModels
         {
             // clear everything in the WPF dock panel container
             docker.Children.Clear();
-            docker.Children.Add(_webView);
+            _webView = new WebView2();
+            _webView.Source = new Uri(_htmlPath);
 
             // initialize the webview 2 instance
             try
@@ -51,6 +52,8 @@ namespace SampleViewModels
                 //_webView.NavigationCompleted += OnWebViewNavigationCompleted;
                 //InitializeDevToolsProtocolHelper();
                 //SubscribeToDocumentUpdated();
+
+                docker.Children.Add(_webView);
             }
             catch (Exception ex)
             {
