@@ -60,6 +60,10 @@
       <Project>{8a8b18f6-b2b0-4ec2-9817-c2c2462755b2}</Project>
       <Name>SampleUI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SampleWebview2\SampleWebview2.csproj">
+      <Project>{534e855a-5cda-41d1-b87a-7a23e0790878}</Project>
+      <Name>SampleWebview2</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

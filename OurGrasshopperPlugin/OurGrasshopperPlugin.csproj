@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <Version>1.0</Version>
+    <Title>OurGrasshopperPlugin</Title>
+    <Description>Description of OurGrasshopperPlugin</Description>
+    <TargetExt>.gha</TargetExt>
+    <BaseOutputPath>C:\Users\wenqi\AppData\Roaming\Grasshopper\Libraries\SampleUI</BaseOutputPath>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Grasshopper" Version="7.13.21348.13001" IncludeAssets="compile;build" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.1414-prerelease" />
+    <PackageReference Include="RhinoCommon" Version="7.13.21348.13001" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\SampleViewModels\SampleViewModels.csproj" />
+    <ProjectReference Include="..\SampleWebview2\SampleWebview2.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  
+  <PropertyGroup Label="Globals">
+    <WebView2DispatchAdapterOutputDir></WebView2DispatchAdapterOutputDir>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="$(Configuration) == 'Debug' AND $([MSBuild]::IsOSPlatform(Windows))">
+    <StartProgram>C:\Program Files\Rhino 7\System\Rhino.exe</StartProgram>
+    <StartArguments></StartArguments>
+    <StartAction>Program</StartAction>
+  </PropertyGroup>
+
+</Project>
